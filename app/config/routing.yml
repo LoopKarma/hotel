@@ -1,0 +1,9 @@
+app.hotel.widget:
+    path:     '/widget/{uuid}.js'
+    defaults: { _controller: AppBundle:Default:widget }
+    requirements:
+        uuid: '\d+'
+
+app.test:
+    path:     '/'
+    defaults: { _controller: AppBundle:Default:index }

@@ -1,0 +1,13 @@
+<script>
+    function createframe()
+    {
+        var iframe = document.createElement('iframe');
+        var html = {{ content }};
+        document.body.appendChild(iframe);
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
+    }
+
+    document.addEventListener('DOMContentLoaded', createframe, false);
+</script>
