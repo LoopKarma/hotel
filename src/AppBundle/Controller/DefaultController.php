@@ -2,35 +2,47 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerBuilder;
+use AppBundle\Service\WidgetContentService;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
     /**
-     *
-     * @ParamConverter("")
-     * @param Request $request
+     * @param string $uuid
      *
      * @return Response
+     * @throws NotFoundHttpException
      */
-    public function widgetAction(string $uuid, Request $request)
+    public function widgetAction(string $uuid): Response
     {
+        $contentDTO = $this->getWidgetContentService()->createWidgetContent($uuid);
+        if ($contentDTO === null) {
+            throw new NotFoundHttpException('Invalid hotel uuid');
+        }
 
-
+        $content = $this->getSerializer()->toArray($contentDTO);
         return $this->render('default/widget.twig', [
-            'content' => $this->render('default/_widget-content.twig', ['uuid' => $uuid])->getContent(),
+            'content' => $this->render('default/_widget-content.twig', $content)->getContent(),
         ]);
     }
 
-    public function indexAction()
+    /**
+     * @return WidgetContentService
+     */
+    private function getWidgetContentService()
     {
-        var_dump($_SERVER);
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->get('widget.content');
+    }
+
+    /**
+     * @return Serializer
+     */
+    private function getSerializer()
+    {
+        return SerializerBuilder::create()->build();
     }
 }

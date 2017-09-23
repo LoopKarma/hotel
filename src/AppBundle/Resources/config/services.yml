@@ -1,0 +1,17 @@
+services:
+    widget.content:
+        class: AppBundle\Service\WidgetContentService
+        arguments:
+            - "@hotel.repository"
+            - "@hotel.rating"
+
+    hotel.rating:
+        class: AppBundle\Service\HotelRatingService
+        arguments:
+           - "@review.repository"
+           - "@rating.formatter"
+        public: false
+
+    rating.formatter:
+        class: AppBundle\Service\RatingFormatterService
+        public: false

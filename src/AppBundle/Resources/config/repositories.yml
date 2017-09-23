@@ -1,0 +1,12 @@
+services:
+    hotel.repository:
+        class: AppBundle\Repository\HotelRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Hotel
+
+    review.repository:
+        class: AppBundle\Repository\ReviewRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Review

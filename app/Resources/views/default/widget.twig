@@ -2,7 +2,12 @@
     function createframe()
     {
         var iframe = document.createElement('iframe');
-        var html = {{ content }};
+
+        iframe.setAttribute('width','100px');
+        iframe.setAttribute('height', '100px');
+        iframe.setAttribute('style', 'background-color:#0000ff');
+
+        var html = '{{ content|e('js') }}';
         document.body.appendChild(iframe);
         iframe.contentWindow.document.open();
         iframe.contentWindow.document.write(html);
@@ -11,3 +16,4 @@
 
     document.addEventListener('DOMContentLoaded', createframe, false);
 </script>
+
